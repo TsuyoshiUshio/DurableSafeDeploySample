@@ -61,7 +61,7 @@ namespace DurableV18Sample
 
         [FunctionName("StatusCheck")]
         public static async Task<IActionResult> StatusCheck(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")]
+            [HttpTrigger(AuthorizationLevel.Function, "get", "post")]
             HttpRequestMessage req,
             [OrchestrationClient] DurableOrchestrationClient client,
             ILogger log)
