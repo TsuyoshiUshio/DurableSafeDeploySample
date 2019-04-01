@@ -81,8 +81,7 @@ namespace DurableV18Sample
         {
             var runtimeStatus = new List<OrchestrationRuntimeStatus>();
             runtimeStatus.Add(OrchestrationRuntimeStatus.Running);
-            var status = await client.GetStatusAsync(DateTime.MinValue, DateTime.MaxValue, runtimeStatus);
-         
+            var status = await client.GetStatusAsync(DateTime.MinValue, DateTime.MaxValue, runtimeStatus);       
             return (ActionResult)new OkObjectResult(status);
         }
     }
