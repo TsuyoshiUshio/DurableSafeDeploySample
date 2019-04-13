@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -61,7 +62,7 @@ namespace DurableV18Sample
 
         [FunctionName("StatusCheck")]
         public static async Task<IActionResult> StatusCheck(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")]
+            [HttpTrigger(AuthorizationLevel.Function, "get", "post")]
             HttpRequestMessage req,
             [OrchestrationClient] DurableOrchestrationClient client,
             ILogger log)
@@ -83,6 +84,17 @@ namespace DurableV18Sample
             runtimeStatus.Add(OrchestrationRuntimeStatus.Running);
             var status = await client.GetStatusAsync(DateTime.MinValue, DateTime.MaxValue, runtimeStatus);       
             return (ActionResult)new OkObjectResult(status);
+        }
+
+        [FunctionName("TestFunctionKeys")]
+        public static async Task<IActionResult> TestFunctionKeys(
+            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
+            ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            var variables = Environment.GetEnvironmentVariables();
+            return (ActionResult)new OkObjectResult(variables);
         }
     }
 }
